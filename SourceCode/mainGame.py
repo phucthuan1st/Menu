@@ -15,6 +15,8 @@ pygame.display.set_caption("Car Racing")
 icon = pygame.image.load("../image/racing.png")
 pygame.display.set_icon(icon)
 
+
+
 # Common Variables
 SpriteDelay = 10
 
@@ -264,18 +266,22 @@ def DrawCheers(screen):
     for i in range(len(Cheers)):
         Cheers[i].Draw(screen)
 
-# Global Game Variables
-Cars = []
-Cheers = []
-# will increase when a car finish
-currentRank = 1
-playedClap = False
+def quitGame():
+    # stop music
+    pygame.mixer.Channel(0).stop()
 
-#Game Loop
-def runGame():
+    # clear cars
+    Cars.clear()
+
+def initGame(setName):
+    global currentRank
+    global playedClap
+
+    currentRank = 1
+    playedClap = False
 
     for i in range(6):
-        image = pygame.image.load("../image/car{0}.png".format(i+1))
+        image = pygame.image.load("../image/set{0}/car{1}.png".format(setName,i+1))
         car = MyCar(i, image)
         Cars.append(car)
 
@@ -286,7 +292,18 @@ def runGame():
 
     # Play background song
     pygame.mixer.Channel(0).play(pygame.mixer.Sound('../soundFX/race3.mp3'), -1)
+
+# Global Game Variables
+Cars = []
+Cheers = []
+# will increase when a car finish
+currentRank = 1
+playedClap = False
+
+#Game Loop
+def runGame(setName):
     running = True
+    initGame(setName)
 
     while running:
         # RGB
@@ -294,6 +311,7 @@ def runGame():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                quitGame()
                 running = False
 
         i = 0

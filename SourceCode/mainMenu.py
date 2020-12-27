@@ -80,6 +80,7 @@ def mainMenu(money, characterSet):
         if changeSetButton.collidepoint(dx, dy):
             if clicked:
                 characterSet = changeSetScreen(characterSet)
+
         if shopButton.collidepoint(dx, dy):
             if clicked:
                 money = shopScreen(money)
@@ -90,7 +91,7 @@ def mainMenu(money, characterSet):
 
             if clicked and toggleMenuSub:
                  draw_text('PRESSED', mediumfont, (0,0,0), DISPLAYSURFACE, 500, 500)
-                 runGame()
+                 runGame(1)
         if changeNameButton.collidepoint(dx, dy):
             if clicked and toggleMenuSub:
                 draw_text('PRESSED', mediumfont, (0,0,0), DISPLAYSURFACE, 500, 500)
