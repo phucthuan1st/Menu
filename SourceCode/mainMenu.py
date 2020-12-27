@@ -87,7 +87,7 @@ def mainMenu(money, characterSet):
             if clicked:
                 toggleMenuSub = not toggleMenuSub
         if playButton.collidepoint(dx, dy):
-            IsPlaying = True
+
             if clicked and toggleMenuSub:
                  draw_text('PRESSED', mediumfont, (0,0,0), DISPLAYSURFACE, 500, 500)
                  runGame()
@@ -288,7 +288,7 @@ def changeNameScreen():
     pass
 
 # Global Variables
-IsPlaying = False
+
 def main():
     Running = True
     while Running:
