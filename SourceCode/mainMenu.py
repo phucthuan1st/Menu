@@ -15,14 +15,21 @@ WINDOWSIZE = (1280,720) #window size
 
 pygame.display.set_caption('Racing bet 888') #set Caption for title bar
 
-MAINMENUSCREEN = pygame.image.load('image\mainmenu.png')
-MAINMENUSCREEN = pygame.transform.scale(MAINMENUSCREEN, WINDOWSIZE) #create background image
-
 menuSound = pygame.mixer.Sound('soundFX\menu.wav') #open sound
 
 DISPLAYSURFACE = pygame.display.set_mode(WINDOWSIZE) #create surface for mainmenu
 gMoney = 0
-characterSet = None
+
+#define the set image
+loginscreen = pygame.image.load('image\loginscreen.png') 
+set0 = 'image\set0.png'
+set1 = 'image\set1.png'
+set2 = 'image\set2.png'
+set3 = 'image\set3.png'
+set4 = 'image\set4.png'
+set5 = 'image\set5.png'
+setIndex = [set0, set1, set2, set3, set4, set5]
+characterSet = 0
 
 #define font using 
 font = pygame.font.SysFont(None, 20, bold=True, italic=False) #set font for drawing
@@ -47,6 +54,8 @@ def mainMenu(money, characterSet):
     toggleMenuSub = False
 
     while Running:
+        MAINMENUSCREEN = pygame.image.load(setIndex[characterSet])
+        MAINMENUSCREEN = pygame.transform.scale(MAINMENUSCREEN, WINDOWSIZE)
         #menuSound.play(-1) #repeat sound
         DISPLAYSURFACE.blit(MAINMENUSCREEN, (0,0)) #draw background
         draw_text(str(money), mediumfont, (255,0,0), DISPLAYSURFACE, 700, 630)
@@ -237,22 +246,22 @@ def shopScreen(money):
             if event.type == KEYDOWN:
                 if event.key == ord('1'):
                     if money < 100:
-                        draw_text('YOU DON\'T HAVE ENOUGHT MONEY', bigfont, (255,255,255), DISPLAYSURFACE, 400, 500)
+                        draw_text('YOU DON\'T HAVE ENOUGH MONEY', bigfont, (255,255,255), DISPLAYSURFACE, 400, 500)
                     else:
                         money -= 100
                 if event.key == ord('2'):
                     if money < 200:
-                        draw_text('YOU DON\'T HAVE ENOUGHT MONEY', bigfont, (255,255,255), DISPLAYSURFACE, 400, 500)
+                        draw_text('YOU DON\'T HAVE ENOUGH MONEY', bigfont, (255,255,255), DISPLAYSURFACE, 400, 500)
                     else: 
                         money -= 200
                 if event.key == ord('3'):
                     if money < 300:
-                        draw_text('YOU DON\'T HAVE ENOUGHT MONEY', bigfont, (255,255,255), DISPLAYSURFACE, 400, 500)
+                        draw_text('YOU DON\'T HAVE ENOUGH MONEY', bigfont, (255,255,255), DISPLAYSURFACE, 400, 500)
                     else:
                         money -= 300
                 if event.key == ord('4'):
                     if money < 400:
-                        draw_text('YOU DON\'T HAVE ENOUGHT MONEY', bigfont, (255,255,255), DISPLAYSURFACE, 400, 500)
+                        draw_text('YOU DON\'T HAVE ENOUGH MONEY', bigfont, (255,255,255), DISPLAYSURFACE, 400, 500)
                     else: 
                         money -= 400
                 if event.key == ord('5'):
@@ -283,6 +292,8 @@ def changeNameScreen():
     pass
 
 def main():
+    DISPLAYSURFACE.blit(loginscreen, (0,0))
+    time.sleep(2)
     Running = True
     while Running:
         Running = mainMenu(gMoney, characterSet)
