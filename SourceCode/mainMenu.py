@@ -4,6 +4,8 @@ import time
 import tkinter
 from tkinter import *
 
+from mainGame import runGame
+
 '''anything go with rect use the form (left, top, width, height)'''
 
 pygame.init()
@@ -15,10 +17,10 @@ WINDOWSIZE = (1280,720) #window size
 
 pygame.display.set_caption('Racing bet 888') #set Caption for title bar
 
-MAINMENUSCREEN = pygame.image.load('image\mainmenu.png')
+MAINMENUSCREEN = pygame.image.load('..\image\mainmenu.png')
 MAINMENUSCREEN = pygame.transform.scale(MAINMENUSCREEN, WINDOWSIZE) #create background image
 
-menuSound = pygame.mixer.Sound('soundFX\menu.wav') #open sound
+menuSound = pygame.mixer.Sound('..\soundFX\menu.wav') #open sound
 
 DISPLAYSURFACE = pygame.display.set_mode(WINDOWSIZE) #create surface for mainmenu
 gMoney = 0
@@ -45,6 +47,7 @@ def mainMenu(money, characterSet):
     Running = True
     clicked = False
     toggleMenuSub = False
+    global IsPlaying
 
     while Running:
         #menuSound.play(-1) #repeat sound
@@ -84,8 +87,10 @@ def mainMenu(money, characterSet):
             if clicked:
                 toggleMenuSub = not toggleMenuSub
         if playButton.collidepoint(dx, dy):
+            IsPlaying = True
             if clicked and toggleMenuSub:
-                draw_text('PRESSED', mediumfont, (0,0,0), DISPLAYSURFACE, 500, 500)
+                 draw_text('PRESSED', mediumfont, (0,0,0), DISPLAYSURFACE, 500, 500)
+                 runGame()
         if changeNameButton.collidepoint(dx, dy):
             if clicked and toggleMenuSub:
                 draw_text('PRESSED', mediumfont, (0,0,0), DISPLAYSURFACE, 500, 500)
@@ -282,6 +287,8 @@ def playScreen():
 def changeNameScreen():
     pass
 
+# Global Variables
+IsPlaying = False
 def main():
     Running = True
     while Running:
@@ -289,5 +296,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 #end of file
