@@ -320,4 +320,5 @@ def runGame():
             Cars.sort(key=SortRanking)
             ShowRanking(Cars)
 
+        # test git commit
         pygame.display.update()
