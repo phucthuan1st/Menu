@@ -343,3 +343,5 @@ def runGame(setName, money):
             ShowRanking(Cars)
 
         pygame.display.update()
+    money += 1000
+    return money

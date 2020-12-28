@@ -102,13 +102,15 @@ def mainMenu(money, characterSet):
             if clicked:
                 toggleMenuSub = not toggleMenuSub
         if playButton.collidepoint(dx, dy):
-            if clicked and toggleMenuSub:
-                if characterSet == 0:
-                    characterSet = 1
-                runGame(characterSet, money)
+            if toggleMenuSub:
+                if clicked:
+                    if characterSet == 0:
+                        characterSet = 1
+                    money = runGame(characterSet, money)
         if changeNameButton.collidepoint(dx, dy):
-            if clicked and toggleMenuSub:
-                draw_text('PRESSED', mediumfont, (0,0,0), DISPLAYSURFACE, 500, 500)
+            if toggleMenuSub:
+                if clicked:
+                    draw_text('PRESSED', mediumfont, (0,0,0), DISPLAYSURFACE, 500, 500)
         clicked = False
 
     #checking exit game or input mouse click
@@ -287,8 +289,6 @@ def shopScreen(money):
     return money
 
 def drawGameMenuSub():
-    subMenuArea = pygame.Rect(1060, 460, 150, 100)
-    pygame.draw.rect(DISPLAYSURFACE, (255,255,255), subMenuArea)
     playButton = pygame.Rect(1075, 470, 120, 40)
     changeNameButton = pygame.Rect(1075, 515, 120, 40)
     pygame.draw.rect(DISPLAYSURFACE, (0,0,0), playButton, 3)
@@ -296,16 +296,11 @@ def drawGameMenuSub():
     draw_text('PLAY', font, (0,0,0), DISPLAYSURFACE, 1115, 485)
     draw_text('CHANGE NAME', font, (0,0,0), DISPLAYSURFACE, 1080, 530)
 
-def playScreen():
-    pass
-
 def changeNameScreen():
     pass
 
 def main():
-    Running = True
-    while Running:
-        Running = mainMenu(gMoney, characterSet)
+    return mainMenu(gMoney, characterSet)
 
 if __name__ == "__main__":
     main()
