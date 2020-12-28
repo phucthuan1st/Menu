@@ -17,8 +17,8 @@ WINDOWSIZE = (1280,720) #window size
 
 pygame.display.set_caption('Racing bet 888') #set Caption for title bar
 
-MAINMENUSCREEN = pygame.image.load('..\image\mainmenu.png')
-MAINMENUSCREEN = pygame.transform.scale(MAINMENUSCREEN, WINDOWSIZE) #create background image
+# MAINMENUSCREEN = pygame.image.load('..\image\mainmenu.png')
+# MAINMENUSCREEN = pygame.transform.scale(MAINMENUSCREEN, WINDOWSIZE) #create background image
 
 menuSound = pygame.mixer.Sound('..\soundFX\menu.wav') #open sound
 
@@ -26,15 +26,15 @@ DISPLAYSURFACE = pygame.display.set_mode(WINDOWSIZE) #create surface for mainmen
 gMoney = 0
 
 #define the set image
-loginscreen = pygame.image.load('image\loginscreen.png')
-set0 = 'image\set0.png'
-set1 = 'image\set1.png'
-set2 = 'image\set2.png'
-set3 = 'image\set3.png'
-set4 = 'image\set4.png'
-set5 = 'image\set5.png'
+loginscreen = pygame.image.load('..\image\loginscreen.png')
+set0 = '..\image\set0.png'
+set1 = '..\image\set1.png'
+set2 = '..\image\set2.png'
+set3 = '..\image\set3.png'
+set4 = '..\image\set4.png'
+set5 = '..\image\set5.png'
 setIndex = [set0, set1, set2, set3, set4, set5]
-characterSet = 0
+characterSet = 1
 
 #define font using 
 font = pygame.font.SysFont(None, 20, bold=True, italic=False) #set font for drawing
@@ -103,7 +103,7 @@ def mainMenu(money, characterSet):
 
             if clicked and toggleMenuSub:
                  draw_text('PRESSED', mediumfont, (0,0,0), DISPLAYSURFACE, 500, 500)
-                 runGame(1)
+                 runGame(2, characterSet)
         if changeNameButton.collidepoint(dx, dy):
             if clicked and toggleMenuSub:
                 draw_text('PRESSED', mediumfont, (0,0,0), DISPLAYSURFACE, 500, 500)

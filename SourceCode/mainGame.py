@@ -37,6 +37,11 @@ PanelX = 300
 PanelY = 100
 RacingLen = 1200
 
+#You Lose
+LoseImg = pygame.image.load("../image/YouLose.png")
+LoseX = 450
+LoseY = 130
+
 #Road
 RoadImg = pygame.image.load("../image/3.png")
 RoadX = 20
@@ -212,6 +217,14 @@ def Win():
         screen.blit(WinImg, (WinX, WinY))
         winDelay -= 1
 
+def Lose():
+    global winDelay
+    global selectedCar
+
+    if winDelay > 0:
+        screen.blit(LoseImg, (LoseX, LoseY))
+        winDelay -= 1
+
 def ShowRanking(Cars):
     # Stop background song
     pygame.mixer.Channel(0).stop()
@@ -270,8 +283,9 @@ def quitGame():
     # stop music
     pygame.mixer.Channel(0).stop()
 
-    # clear cars
+    # clear all global variables
     Cars.clear()
+    Cheers.clear()
 
 def initGame(setName):
     global currentRank
@@ -299,11 +313,13 @@ Cheers = []
 # will increase when a car finish
 currentRank = 1
 playedClap = False
+selectedCar = -1
 
 #Game Loop
-def runGame(setName):
+def runGame(selectedNumber, setName):
     running = True
     initGame(setName)
+    selectedCar = selectedNumber
 
     while running:
         # RGB
@@ -330,7 +346,17 @@ def runGame(setName):
 
         # # Draw win panel
         if currentRank > 1:
-            Win()
+            winner = None
+            for i in range(len(Cars)):
+                if Cars[i].rank == 1:
+                    winner = Cars[i]
+                    break
+            # because Number of Car from index 0
+            # selectedCar from index 1
+            if winner != None and winner.No+1 == selectedCar:
+                Win()
+            else:
+                Lose()
 
         # Draw Ranking
         if currentRank > len(Cars):
