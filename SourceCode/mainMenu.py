@@ -1,12 +1,10 @@
-'''import library'''
-import time
-'''import other'''
 import pygame, sys
-from pygame import *
-''' comment '''
-import mainGame
-'''comment '''
-from mainGame import *
+from pygame.locals import *
+import time
+import tkinter
+from tkinter import *
+
+from mainGame import runGame
 
 '''anything go with rect use the form (left, top, width, height)'''
 
@@ -33,9 +31,9 @@ set3 = '..\image\set3.png'
 set4 = '..\image\set4.png'
 set5 = '..\image\set5.png'
 setIndex = [set0, set1, set2, set3, set4, set5]
-characterSet = 0
+characterSet = 1
 
-#define font using
+#define font using 
 font = pygame.font.SysFont(None, 20, bold=True, italic=False) #set font for drawing
 mediumfont = pygame.font.SysFont(None, 30, bold = True, italic = False)
 bigfont = pygame.font.SysFont(None, 40, bold = True, italic = False)
@@ -44,7 +42,7 @@ bigfont = pygame.font.SysFont(None, 40, bold = True, italic = False)
 #------------------------------------------------------------------------------------------------#
 
 #drawing text on screen
-def draw_text(text, font, color, surface, x, y):
+def draw_text(text, font, color, surface, x, y): 
     textobj = font.render(text, 1, color)
     textrect = textobj.get_rect()
     textrect.topleft = (x,y)
@@ -106,7 +104,7 @@ def mainMenu(money, characterSet):
                 if clicked:
                     if characterSet == 0:
                         characterSet = 1
-                    money = runGame(characterSet, money)
+                    money = runGame(2, characterSet, money)
         if changeNameButton.collidepoint(dx, dy):
             if toggleMenuSub:
                 if clicked:
@@ -275,13 +273,13 @@ def shopScreen(money):
                 if event.key == ord('4'):
                     if money < 400:
                         draw_text('YOU DON\'T HAVE ENOUGH MONEY', bigfont, (255,255,255), DISPLAYSURFACE, 400, 500)
-                    else:
+                    else: 
                         money -= 400
                 if event.key == ord('5'):
                     if money < 500:
                         draw_text('YOU DON\'T HAVE ENOUGHT MONEY', bigfont, (255,255,255), DISPLAYSURFACE, 400, 500)
-                    else:
-                        money -= 500
+                    else: 
+                        money -= 500                       
                 if event.key == K_ESCAPE:
                     running = False
         fpsClock.tick(FPS)
