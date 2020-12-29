@@ -4,8 +4,10 @@ import time
 import tkinter
 from tkinter import *
 
-from mainGame import runGame
+from mainGame import *
 
+import login
+from login import loginscreen
 '''anything go with rect use the form (left, top, width, height)'''
 
 pygame.init()
