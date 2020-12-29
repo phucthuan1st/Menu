@@ -1,13 +1,9 @@
 import pygame, sys
 from pygame.locals import *
 import time
-import tkinter
-from tkinter import *
 
 from mainGame import *
 
-import login
-from login import loginscreen
 '''anything go with rect use the form (left, top, width, height)'''
 
 pygame.init()
@@ -34,7 +30,7 @@ set4 = '..\image\set4.png'
 set5 = '..\image\set5.png'
 setIndex = [set0, set1, set2, set3, set4, set5]
 characterSet = 1
-
+loginSound = pygame.mixer.Sound('..\soundFX\menu.wav')
 #define font using 
 font = pygame.font.SysFont(None, 20, bold=True, italic=False) #set font for drawing
 mediumfont = pygame.font.SysFont(None, 30, bold = True, italic = False)
@@ -50,9 +46,40 @@ def draw_text(text, font, color, surface, x, y):
     textrect.topleft = (x,y)
     surface.blit(textobj, textrect)
     return 1
+loginScreen = pygame.image.load('..\image\loginscreen.png')
+
+def loginscreen():
+    running = True
+    while running:
+        DISPLAYSURFACE = pygame.display.set_mode(WINDOWSIZE)
+        DISPLAYSURFACE.blit(loginScreen, (0,0))
+
+        userNameArea = pygame.Rect(40, 320, 375, 40)
+
+        dx, dy = pygame.mouse.get_pos()
+
+        if userNameArea.collidepoint(dx,dy):
+            pygame.draw.rect(loginScreen, (0,255,0), userNameArea, 3)
+
+        clicked = False
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    clicked = True
+            if event.type == KEYDOWN:
+                if event.key == K_RETURN:
+                    running = False
+
+        fpsClock.tick(FPS)
+        pygame.display.update()
+    username = 'Thuan dep trai'
+    return username
 
 #running main menu
-def mainMenu(money, characterSet):
+def mainMenu(money, characterSet, username):
     Running = True
     clicked = False
     toggleMenuSub = False
@@ -61,6 +88,7 @@ def mainMenu(money, characterSet):
         MAINMENUSCREEN = pygame.image.load(setIndex[characterSet])
         MAINMENUSCREEN = pygame.transform.scale(MAINMENUSCREEN, WINDOWSIZE)
         DISPLAYSURFACE.blit(MAINMENUSCREEN, (0,0)) #draw background
+        draw_text(username, font, (0,0,0), DISPLAYSURFACE, 265, 105)
         draw_text(str(money), mediumfont, (255,0,0), DISPLAYSURFACE, 700, 630)
         draw_text('YOUR CURRENT SET IS: ' + str(characterSet), font, (0,0,0), DISPLAYSURFACE, 550, 200)
         #define the Buttons
@@ -300,7 +328,8 @@ def changeNameScreen():
     pass
 
 def main():
-    return mainMenu(gMoney, characterSet)
+    username = loginscreen()
+    mainMenu(gMoney, characterSet, username)
 
 if __name__ == "__main__":
     main()
