@@ -1,27 +1,27 @@
 import pygame, sys
-from pygame.locals import *
+
 import time
+
+from pygame.locals import *
 
 from mainGame import *
 
+import openpyxl
 '''anything go with rect use the form (left, top, width, height)'''
-
 pygame.init()
+
 #from this is the define for game statistics
 FPS = 60
 fpsClock = pygame.time.Clock()
-
-WINDOWSIZE = (1280,720) #window size
-
-pygame.display.set_caption('Racing bet 888') #set Caption for title bar
-
-menuSound = pygame.mixer.Sound('..\soundFX\menu.wav') #open sound
-
-DISPLAYSURFACE = pygame.display.set_mode(WINDOWSIZE) #create surface for mainmenu
 gMoney = 0
 
-#define the set image
+WINDOWSIZE = (1280,720) #window size
+pygame.display.set_caption('Racing bet 888') #set Caption for title bar
+menuSound = pygame.mixer.Sound('..\soundFX\menu.wav') #open sound
+DISPLAYSURFACE = pygame.display.set_mode(WINDOWSIZE) #create surface for mainmenu
 loginscreen = pygame.image.load('..\image\loginscreen.png')
+
+#define the set image
 set0 = '..\image\set0.png'
 set1 = '..\image\set1.png'
 set2 = '..\image\set2.png'
@@ -29,10 +29,11 @@ set3 = '..\image\set3.png'
 set4 = '..\image\set4.png'
 set5 = '..\image\set5.png'
 setIndex = [set0, set1, set2, set3, set4, set5]
-characterSet = 1
+characterSet = 0
 loginSound = pygame.mixer.Sound('..\soundFX\menu.wav')
 #define font using 
 font = pygame.font.SysFont(None, 20, bold=True, italic=False) #set font for drawing
+userNameFont = pygame.font.SysFont(None, 25, bold=True, italic=True)
 mediumfont = pygame.font.SysFont(None, 30, bold = True, italic = False)
 bigfont = pygame.font.SysFont(None, 40, bold = True, italic = False)
 
@@ -50,6 +51,7 @@ loginScreen = pygame.image.load('..\image\loginscreen.png')
 
 def loginscreen():
     running = True
+    clicked = False
     while running:
         DISPLAYSURFACE = pygame.display.set_mode(WINDOWSIZE)
         DISPLAYSURFACE.blit(loginScreen, (0,0))
@@ -57,9 +59,6 @@ def loginscreen():
         userNameArea = pygame.Rect(40, 320, 375, 40)
 
         dx, dy = pygame.mouse.get_pos()
-
-        if userNameArea.collidepoint(dx,dy):
-            pygame.draw.rect(loginScreen, (0,255,0), userNameArea, 3)
 
         clicked = False
         for event in pygame.event.get():
@@ -88,13 +87,19 @@ def mainMenu(money, characterSet, username):
         MAINMENUSCREEN = pygame.image.load(setIndex[characterSet])
         MAINMENUSCREEN = pygame.transform.scale(MAINMENUSCREEN, WINDOWSIZE)
         DISPLAYSURFACE.blit(MAINMENUSCREEN, (0,0)) #draw background
-        draw_text(username, font, (0,0,0), DISPLAYSURFACE, 265, 105)
+        displayUserNameArea = (250, 87, 190, 43)
+        moneyArea = (600, 605, 250, 62)
+        pygame.draw.rect(DISPLAYSURFACE, (255,255,255), displayUserNameArea)
+        pygame.draw.rect(DISPLAYSURFACE, (255,255,255), moneyArea)
+        pygame.draw.rect(DISPLAYSURFACE, (255, 0, 0), moneyArea, 3)
+        draw_text(username, userNameFont, (255, 0, 255), DISPLAYSURFACE, 260, 100)
         draw_text(str(money), mediumfont, (255,0,0), DISPLAYSURFACE, 700, 630)
         draw_text('YOUR CURRENT SET IS: ' + str(characterSet), font, (0,0,0), DISPLAYSURFACE, 550, 200)
+
         #define the Buttons
         exitButton = pygame.Rect(40, 38, 82, 67)
         helpButton = pygame.Rect(55, 580, 110, 100)
-        miniGameButton = pygame.Rect(200, 580, 110, 100)
+        miniGameButton = pygame.Rect(212, 575, 100, 100)
         changeSetButton = pygame.Rect(350, 580, 110, 100)
         shopButton = pygame.Rect(885, 580, 90, 95)
         gameButton = pygame.Rect(1050, 580, 210, 100)
@@ -105,28 +110,32 @@ def mainMenu(money, characterSet, username):
         dx, dy = pygame.mouse.get_pos() #get clicked
 
         #if mouse click execute
+        if characterSet == 2:
+            frame = (0,0,0)
+        else:
+            frame = (255,255,255)
         if exitButton.collidepoint(dx, dy):
-            pygame.draw.rect(DISPLAYSURFACE, (0,0,0), exitButton, 3)
+            pygame.draw.rect(DISPLAYSURFACE, frame, exitButton, 3)
             if clicked:
                 exitConfirmScreen()
         if helpButton.collidepoint(dx, dy):
-            pygame.draw.rect(DISPLAYSURFACE, (0, 0, 0), helpButton, 3)
+            pygame.draw.rect(DISPLAYSURFACE, frame, helpButton, 3)
             if clicked:
                 helpScreen()
         if miniGameButton.collidepoint(dx, dy):
-            pygame.draw.rect(DISPLAYSURFACE, (0, 0, 0), miniGameButton, 3)
+            pygame.draw.rect(DISPLAYSURFACE, frame, miniGameButton, 3)
             if clicked:
                 money = miniGameScreen(money)
         if changeSetButton.collidepoint(dx, dy):
-            pygame.draw.rect(DISPLAYSURFACE, (0, 0, 0), changeSetButton, 3)
+            pygame.draw.rect(DISPLAYSURFACE, frame, changeSetButton, 3)
             if clicked:
                 characterSet = changeSetScreen(characterSet)
         if shopButton.collidepoint(dx, dy):
-            pygame.draw.rect(DISPLAYSURFACE, (0, 0, 0), shopButton, 3)
+            pygame.draw.rect(DISPLAYSURFACE, frame, shopButton, 3)
             if clicked:
                 money = shopScreen(money)
         if gameButton.collidepoint(dx, dy):
-            pygame.draw.rect(DISPLAYSURFACE, (0, 0, 0), gameButton, 3)
+            pygame.draw.rect(DISPLAYSURFACE, frame, gameButton, 3)
             if clicked:
                 toggleMenuSub = not toggleMenuSub
         if playButton.collidepoint(dx, dy):
@@ -138,7 +147,7 @@ def mainMenu(money, characterSet, username):
         if changeNameButton.collidepoint(dx, dy):
             if toggleMenuSub:
                 if clicked:
-                    draw_text('PRESSED', mediumfont, (0,0,0), DISPLAYSURFACE, 500, 500)
+                    draw_text('PRESSED', mediumfont, frame, DISPLAYSURFACE, 500, 500)
         clicked = False
 
     #checking exit game or input mouse click

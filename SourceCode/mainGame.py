@@ -296,7 +296,6 @@ def quitGame():
     Cheers.clear()
 
 
-
 def initGame(setName):
     global currentRank
     global playedClap
