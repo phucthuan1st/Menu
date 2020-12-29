@@ -318,7 +318,6 @@ def drawGameEndSub():
     draw_text('RETURN MENU', font, (255,0,0), DISPLAYSURFACE, 1080, 530)
 
 
-
 def initGame(setName):
     global currentRank
     global playedClap
