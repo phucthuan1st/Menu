@@ -18,7 +18,6 @@ WINDOWSIZE = (1280, 720)  # window size
 
 pygame.display.set_caption('LOGIN')
 loginSound = pygame.mixer.Sound('..\soundFX\menu.wav')
-DISPLAYSURFACE = pygame.display.set_mode(WINDOWSIZE)
 icon = pygame.image.load("../image/racing.png")
 pygame.display.set_icon(icon)
 loginScreen = pygame.image.load('..\image\loginscreen.png')
@@ -26,6 +25,7 @@ loginScreen = pygame.image.load('..\image\loginscreen.png')
 def loginscreen():
     running = True
     while running:
+        DISPLAYSURFACE = pygame.display.set_mode(WINDOWSIZE)
         DISPLAYSURFACE.blit(loginScreen, (0,0))
         userNameArea = pygame.Rect(40, 320, 375, 40)
 
