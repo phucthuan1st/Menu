@@ -165,7 +165,6 @@ def mainMenu(money, characterSet, username):
         DISPLAYSURFACE.blit(MAINMENUSCREEN, (0,0)) #draw background
         displayUserNameArea = (250, 87, 190, 43)
         moneyArea = (600, 605, 250, 62)
-        33
         pygame.draw.rect(DISPLAYSURFACE, (255,255,255), moneyArea)
         pygame.draw.rect(DISPLAYSURFACE, (255, 0, 0), moneyArea, 3)
         draw_text(username, userNameFont, (255, 0, 255), DISPLAYSURFACE, 260, 100)
@@ -232,7 +231,9 @@ def mainMenu(money, characterSet, username):
         if logOutButton.collidepoint(dx, dy):
             if clicked:
                 menuSound.stop()
-                loginscreen()
+                username, password = loginscreen()
+                running = False
+
 
         #choose bet car
         if bet1Button.collidepoint(dx, dy):
@@ -275,7 +276,7 @@ def mainMenu(money, characterSet, username):
     #update screen every frame of loop
         fpsClock.tick(FPS)
         pygame.display.update() #update screen every execution
-    return Running #return the running status to main
+    return running
 
 
 def exitConfirmScreen():
@@ -340,31 +341,6 @@ def helpScreen():
                     running = False
         fpsClock.tick(FPS)
         pygame.display.update()
-
-
-def miniGameScreen(money):
-    running = True
-    while running:
-        DISPLAYSURFACE.fill((0,0,0))
-        draw_text('Nothing to see at this time', bigfont, (255,255,255), DISPLAYSURFACE, 450, 300)
-        money = miniGameEvent(money)
-        draw_text('Money at this time is: ' + str(money), mediumfont, (255,255,255), DISPLAYSURFACE, 500, 400)
-        draw_text('Press ESC Key to return Main Menu', font, (255,255,255), DISPLAYSURFACE, 530, 120)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
-                    running = False
-        fpsClock.tick(FPS)
-        pygame.display.update()
-    return money
-
-
-def miniGameEvent(money):
-    money += 10
-    return money
 
 
 def changeSetScreen(selectedSet):
@@ -479,6 +455,9 @@ def shopScreen(money):
     return money
 
 
+def miniGameScreen(money):
+    return 1000 + money
+
 def main():
     username, password = loginscreen()
     mainMenu(gMoney, characterSet, username)
@@ -488,3 +467,6 @@ if __name__ == "__main__":
     main()
 
 # end of file
+
+
+
