@@ -8,13 +8,13 @@ from mainGame import *
 
 import pandas as pd
 
-'''anything go with rect use the form (left, top, width, height)'''
 pygame.init()
+'''anything go with rect use the form (left, top, width, height)'''
 
 #from this is the define for game statistics
 FPS = 60
 fpsClock = pygame.time.Clock()
-gMoney = 0
+gMoney = 5000
 
 #access to database
 database = pd.ExcelFile("../database.xlsx")
@@ -23,9 +23,10 @@ data = pd.read_excel(database, 0, header=None)
 #windows statics
 WINDOWSIZE = (1280,720) #window size
 pygame.display.set_caption('Racing bet 888') #set Caption for title bar
-menuSound = pygame.mixer.Sound('../soundFX/menu.wav') #open sound
 DISPLAYSURFACE = pygame.display.set_mode(WINDOWSIZE) #create surface for mainmenu
-loginscreen = pygame.image.load('../image/loginscreen.png')
+
+menuSound = pygame.mixer.Sound('../soundFX/menu.wav') #open sound
+#loginscreen = pygame.image.load('../image/loginscreen.png')
 changeSet = pygame.image.load('../image/changeSet.png')
 donate = pygame.image.load('../image/donateRaiseRacingGame.png')
 
@@ -36,6 +37,7 @@ set2 = '../image/set2.png'
 set3 = '../image/set3.png'
 set4 = '../image/set4.png'
 set5 = '../image/set5.png'
+
 setIndex = [set0, set1, set2, set3, set4, set5]
 characterSet = 0
 loginSound = pygame.mixer.Sound("../soundFX/loginsound.wav")
@@ -155,6 +157,7 @@ def mainMenu(money, characterSet, username):
     clicked = False #get clicked
     show = True #music description info
     menuSound.play(-1) #playing background music
+    betCar = 1
     while Running:
         #define the display
         MAINMENUSCREEN = pygame.image.load(setIndex[characterSet])
@@ -162,7 +165,7 @@ def mainMenu(money, characterSet, username):
         DISPLAYSURFACE.blit(MAINMENUSCREEN, (0,0)) #draw background
         displayUserNameArea = (250, 87, 190, 43)
         moneyArea = (600, 605, 250, 62)
-        pygame.draw.rect(DISPLAYSURFACE, (255,255,255), displayUserNameArea)
+        33
         pygame.draw.rect(DISPLAYSURFACE, (255,255,255), moneyArea)
         pygame.draw.rect(DISPLAYSURFACE, (255, 0, 0), moneyArea, 3)
         draw_text(username, userNameFont, (255, 0, 255), DISPLAYSURFACE, 260, 100)
@@ -224,12 +227,38 @@ def mainMenu(money, characterSet, username):
             if clicked:
                 if characterSet == 0:
                     characterSet = 1
-                money = runGame(2, characterSet, money)
+                money = runGame(betCar, characterSet, money)
                 menuSound.play(-1)
         if logOutButton.collidepoint(dx, dy):
             if clicked:
                 menuSound.stop()
                 loginscreen()
+
+        #choose bet car
+        if bet1Button.collidepoint(dx, dy):
+            if clicked:
+                pygame.draw.rect(DISPLAYSURFACE, (0, 255, 0), bet1Button)
+                betCar = 1
+        if bet2Button.collidepoint(dx, dy):
+            if clicked:
+                pygame.draw.rect(DISPLAYSURFACE, (0, 255, 0), bet2Button)
+                betCar = 2
+        if bet3Button.collidepoint(dx, dy):
+            if clicked:
+                pygame.draw.rect(DISPLAYSURFACE, (0, 255, 0), bet3Button)
+                betCar = 3
+        if bet4Button.collidepoint(dx, dy):
+            if clicked:
+                pygame.draw.rect(DISPLAYSURFACE, (0, 255, 0), bet4Button)
+                betCar = 4
+        if bet5Button.collidepoint(dx, dy):
+            if clicked:
+                pygame.draw.rect(DISPLAYSURFACE, (0, 255, 0), bet5Button)
+                betCar = 5
+        if bet6Button.collidepoint(dx, dy):
+            if clicked:
+                pygame.draw.rect(DISPLAYSURFACE, (0, 255, 0), bet6Button)
+                betCar = 6
 
         #not code yet
         clicked = False
@@ -267,7 +296,7 @@ def exitConfirmScreen():
 
         if yesButton.collidepoint(dx,dy):
             if clicked:
-                pygame.exit()
+                pygame.quit()
                 sys.exit()
         elif noButton.collidepoint(dx,dy):
             if clicked:
@@ -344,16 +373,14 @@ def changeSetScreen(selectedSet):
     while running:
         DISPLAYSURFACE.blit(changeSet, (0,0))
 
-        draw_text('Your current set is: ' + str(selectedSet), font, (0,0,0), DISPLAYSURFACE, 500, 200)
-
         if clicked:
             running = False
 
-        set1Button = pygame.Rect(5, 298, 200, 153)
-        set2Button = pygame.Rect(230, 298, 200, 153)
-        set3Button = pygame.Rect(465, 298, 200, 153)
-        set4Button = pygame.Rect(710, 298, 200, 153)
-        set5Button = pygame.Rect(950, 298, 280, 153)
+        set1Button = pygame.Rect(9, 298, 200, 153)
+        set2Button = pygame.Rect(242, 298, 200, 153)
+        set3Button = pygame.Rect(484, 298, 200, 153)
+        set4Button = pygame.Rect(720, 270, 210, 173)
+        set5Button = pygame.Rect(960, 298, 305, 153)
 
         dx, dy = pygame.mouse.get_pos()
 
@@ -450,25 +477,6 @@ def shopScreen(money):
         fpsClock.tick(FPS)
         pygame.display.update()
     return money
-
-
-def drawGameMenuSub(set):
-    if set == 1:
-        textColor = (0,0,0)
-        buttonColor = (255,255,255)
-    else:
-        textColor = (255, 255, 255)
-        buttonColor = (0, 0, 0)
-    playButton = pygame.Rect(1075, 470, 120, 40)
-    changeNameButton = pygame.Rect(1075, 515, 120, 40)
-    pygame.draw.rect(DISPLAYSURFACE, buttonColor, playButton)
-    pygame.draw.rect(DISPLAYSURFACE, buttonColor, changeNameButton)
-    draw_text('PLAY', font, textColor, DISPLAYSURFACE, 1115, 485)
-    draw_text('CHANGE NAME', font, textColor, DISPLAYSURFACE, 1080, 530)
-
-
-def changeNameScreen():
-    pass
 
 
 def main():

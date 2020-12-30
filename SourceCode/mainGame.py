@@ -393,6 +393,8 @@ def runGame(selectedNumber, setName, money):
 
         pygame.display.update()
     if youWin:
-        money += 1000
+        money += 1160
+    else:
+        money -= 1000
     return money
 
