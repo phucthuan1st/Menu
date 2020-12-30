@@ -2,40 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b5f0bc71-4799-4014-b424-7f26b12fe812" name="Default Changelist" comment="merge code">
-      <change afterPath="$PROJECT_DIR$/image/mainmenu.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/image/set3/car1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/image/set3/car2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/image/set3/car3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/image/set3/car4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/image/set3/car5.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/image/set3/car6.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/image/set4/phúc.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/image/set4/thuần.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/image/set4/thành.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/image/set4/thái.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/image/set4/thật.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/image/set4/trường.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/image/set5/xe 2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/image/set5/xe1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/image/set5/xe3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/image/set5/xe4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/image/set5/xe5.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/image/set5/xe6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_28_2020_10_35_PM__Default_Changelist_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_28_2020_10_35_PM__Default_Changelist_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_28_2020_11_44_PM__Default_Changelist_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_28_2020_11_44_PM__Default_Changelist_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SourceCode/mainGame.py" beforeDir="false" afterPath="$PROJECT_DIR$/SourceCode/mainGame.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SourceCode/mainMenu.py" beforeDir="false" afterPath="$PROJECT_DIR$/SourceCode/mainMenu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/image/set0.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/set0.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/image/set1.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/set1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/image/set2.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/set2.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/image/set2/car1.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/set2/car1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/image/set2/car2.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/set2/car2.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/image/set2/car3.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/set2/car3.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/image/set2/car4.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/set2/car4.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/image/set2/car5.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/set2/car5.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/image/set2/car6.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/set2/car6.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/image/set3.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/set3.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/image/set4.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/set4.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/image/set5.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/set5.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,7 +98,14 @@
       <option name="project" value="LOCAL" />
       <updated>1609082115516</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="merge code">
+      <created>1609177328971</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1609177328971</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -147,7 +124,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/feature/game" />
+                        <option value="feature/game" />
                       </list>
                     </value>
                   </entry>

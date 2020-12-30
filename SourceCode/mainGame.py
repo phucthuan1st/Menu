@@ -1,6 +1,6 @@
 import random
-
-import pygame
+from pygame.locals import *
+import pygame, sys
 
 pygame.init()
 pygame.mixer.init()
@@ -8,13 +8,24 @@ pygame.mixer.set_num_channels(10)
 
 # creat the screen
 screen = pygame.display.set_mode((1280, 720))
+WINDOWSIZE = (1280,720) #window size
+DISPLAYSURFACE = pygame.display.set_mode(WINDOWSIZE)
 
 #Title and Icon
 pygame.display.set_caption("Car Racing")
 icon = pygame.image.load("../image/racing.png")
 pygame.display.set_icon(icon)
 
+#define font using
+font = pygame.font.SysFont(None, 20, bold=True, italic=False) #set font for drawing
 
+#drawing text on screen
+def draw_text(text, font, color, surface, x, y):
+    textobj = font.render(text, 1, color)
+    textrect = textobj.get_rect()
+    textrect.topleft = (x,y)
+    surface.blit(textobj, textrect)
+    return 1
 
 # Common Variables
 SpriteDelay = 10
@@ -245,6 +256,9 @@ def ShowRanking(Cars):
     rankingImg = pygame.transform.scale(RankingImg, (700, 500))
     screen.blit(rankingImg, (PanelX, PanelY))
 
+    #drawEndMenu
+    drawGameEndSub()
+
     # init font
     pygame.font.init()
     myfont = pygame.font.SysFont('Comic Sans MS', 30)
@@ -295,6 +309,14 @@ def quitGame():
     Cars.clear()
     Cheers.clear()
 
+def drawGameEndSub():
+    playagainButton = pygame.Rect(1075, 470, 120, 40)
+    returnmenuButton = pygame.Rect(1075, 515, 120, 40)
+    pygame.draw.rect(DISPLAYSURFACE, (0,0,0), playagainButton, 3)
+    pygame.draw.rect(DISPLAYSURFACE, (0,0,0), returnmenuButton, 3)
+    draw_text('PLAY AGAIN', font, (255,0,0), DISPLAYSURFACE, 1090, 485)
+    draw_text('RETURN MENU', font, (255,0,0), DISPLAYSURFACE, 1080, 530)
+
 
 
 def initGame(setName):
@@ -303,12 +325,13 @@ def initGame(setName):
     global selectedCar
     global winDelay
     global youWin
-
+    global youLose
     currentRank = 1
     playedClap = False
     selectedCar = -1
     winDelay = 200
     youWin = False
+    youLose = False
 
     for i in range(6):
         image = pygame.image.load("../image/set{0}/car{1}.png".format(setName,i+1))
@@ -332,13 +355,16 @@ playedClap = False
 selectedCar = -1
 winDelay = 200
 youWin = False
+youLose = False
 
 #Game Loop
 def runGame(selectedNumber, setName, money):
     running = True
+    clicked = None
     initGame(setName)
     global selectedCar
     global youWin
+    global youLose
 
     selectedCar = selectedNumber
 
@@ -355,6 +381,18 @@ def runGame(selectedNumber, setName, money):
                 if event.key == pygame.K_ESCAPE:
                     quitGame()
                     running = False
+
+        playagainButton = pygame.Rect(1075, 470, 120, 40)
+        returnmenuNameButton = pygame.Rect(1075, 515, 120, 40)
+
+        # GET MOUSE CLICK
+        pygame.draw.rect(DISPLAYSURFACE, (255, 255, 255), playagainButton)
+        dx, dy = pygame.mouse.get_pos()  # get clicked
+
+        # if mouse click execute
+        if playagainButton.collidepoint(dx, dy):
+            if clicked:
+                playAgain()
 
         i = 0
         for i in range(num_of_road):
@@ -385,6 +423,7 @@ def runGame(selectedNumber, setName, money):
                 youWin = True
             else:
                 Lose()
+                youLose = True
 
         # Draw Ranking
         if currentRank > len(Cars):
@@ -395,5 +434,37 @@ def runGame(selectedNumber, setName, money):
         pygame.display.update()
     if youWin:
         money += 1000
+    if youLose:
+        money -= 1000
     return money
 
+
+def playAgain():
+    running = True
+    clicked = False
+    global selectedNumber
+    global setName
+    global money
+    while running:
+        playagainButton = pygame.Rect(1075, 470, 120, 40)
+
+        # GET MOUSE CLICK
+        dx, dy = pygame.mouse.get_pos()  # get clicked
+
+        DISPLAYSURFACE.fill((0, 0, 0))
+        if playagainButton.collidepoint(dx, dy):
+            if clicked:
+                runGame(selectedNumber, setName, money)
+        # check event
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    running = False
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    clicked = True
+        pygame.display.update()
+    return money
