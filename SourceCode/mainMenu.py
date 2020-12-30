@@ -190,6 +190,7 @@ def mainMenu(money, characterSet, username):
         gameButton = pygame.Rect(1050, 580, 210, 100)
         playButton = pygame.Rect(1075, 465, 120, 45)
         changeNameButton = pygame.Rect(1075, 515, 120, 40)
+        logOutButton = pygame.Rect(1213, 5, 68, 68)
 
         #GET MOUSE CLICK
         dx, dy = pygame.mouse.get_pos() #get clicked
@@ -225,7 +226,10 @@ def mainMenu(money, characterSet, username):
                     characterSet = 1
                 money = runGame(2, characterSet, money)
                 menuSound.play(-1)
-
+        if logOutButton.collidepoint(dx, dy):
+            if clicked:
+                menuSound.stop()
+                loginscreen()
 
         #not code yet
         clicked = False
