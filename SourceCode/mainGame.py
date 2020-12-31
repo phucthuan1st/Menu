@@ -1,6 +1,6 @@
 import random
-
-import pygame
+from pygame.locals import *
+import pygame, sys
 
 pygame.init()
 pygame.mixer.init()
@@ -8,13 +8,24 @@ pygame.mixer.set_num_channels(10)
 
 # creat the screen
 screen = pygame.display.set_mode((1280, 720))
+WINDOWSIZE = (1280,720) #window size
+DISPLAYSURFACE = pygame.display.set_mode(WINDOWSIZE)
 
 #Title and Icon
 pygame.display.set_caption("Car Racing")
 icon = pygame.image.load("../image/racing.png")
 pygame.display.set_icon(icon)
 
+#define font using
+font = pygame.font.SysFont(None, 20, bold=True, italic=False) #set font for drawing
 
+#drawing text on screen
+def draw_text(text, font, color, surface, x, y):
+    textobj = font.render(text, 1, color)
+    textrect = textobj.get_rect()
+    textrect.topleft = (x,y)
+    surface.blit(textobj, textrect)
+    return 1
 
 # Common Variables
 SpriteDelay = 10
@@ -75,6 +86,7 @@ class MyCar():
         self.rank = 0
 
         self.xChange = random.randrange(10, 15, 1) / 10
+        # self.xChange = random.randrange(50, 100, 1) / 10
 
     def Update(self):
         # update timer for go back
@@ -92,7 +104,7 @@ class MyCar():
         if self.timer <= 0 and self.isStun:
             self.isStun = False
             self.xChange = random.randrange(10, 15, 1) / 10
-
+#         self.xChange = random.randrange(50, 100, 1) / 10
         if not self.isGoBack and not self.isStun:
             self.x += self.xChange
 
@@ -245,6 +257,9 @@ def ShowRanking(Cars):
     rankingImg = pygame.transform.scale(RankingImg, (700, 500))
     screen.blit(rankingImg, (PanelX, PanelY))
 
+    #drawEndMenu
+    drawGameEndSub()
+
     # init font
     pygame.font.init()
     myfont = pygame.font.SysFont('Comic Sans MS', 30)
@@ -290,11 +305,18 @@ def quitGame():
     # stop music
     pygame.mixer.Channel(0).stop()
 
-
     # clear all global variables
     Cars.clear()
     Cheers.clear()
 
+# Buttons on Ranking panel
+playagainButton = pygame.Rect(1075, 470, 120, 40)
+returnmenuButton = pygame.Rect(1075, 515, 120, 40)
+def drawGameEndSub():
+    pygame.draw.rect(DISPLAYSURFACE, (255, 255, 255), playagainButton)
+    pygame.draw.rect(DISPLAYSURFACE, (255, 255, 255), returnmenuButton)
+    draw_text('PLAY AGAIN', font, (255,0,0), DISPLAYSURFACE, 1090, 485)
+    draw_text('RETURN MENU', font, (255,0,0), DISPLAYSURFACE, 1080, 530)
 
 def initGame(setName):
     global currentRank
@@ -302,15 +324,19 @@ def initGame(setName):
     global selectedCar
     global winDelay
     global youWin
+    global youLose
+    global isCountWin
 
     currentRank = 1
     playedClap = False
     selectedCar = -1
-    winDelay = 200
-    youWin = False
+    winDelay = 20
+    youWin = 0
+    youLose = 0
+    isCountWin = False
 
     for i in range(6):
-        image = pygame.image.load("../image/set{0}/car{1}.png".format(setName,i+1))
+        image = pygame.image.load("../image/set{0}/car{1}.png".format(setName, i+1))
         car = MyCar(i, image)
         Cars.append(car)
 
@@ -322,6 +348,27 @@ def initGame(setName):
     # Play background song
     pygame.mixer.Channel(0).play(pygame.mixer.Sound('../soundFX/race3.mp3'), -1)
 
+def playAgain(setName):
+    global currentRank
+    global playedClap
+    global winDelay
+    global isCountWin
+    currentRank = 1
+    playedClap = False
+    winDelay = 20
+    isCountWin = False
+
+    # clear all global variables
+    Cars.clear()
+
+    for i in range(6):
+        image = pygame.image.load("../image/set{0}/car{1}.png".format(setName, i+1))
+        car = MyCar(i, image)
+        Cars.append(car)
+
+    # Play background song
+    pygame.mixer.Channel(0).play(pygame.mixer.Sound('../soundFX/race3.mp3'), -1)
+
 # Global Game Variables
 Cars = []
 Cheers = []
@@ -329,21 +376,46 @@ Cheers = []
 currentRank = 1
 playedClap = False
 selectedCar = -1
-winDelay = 200
-youWin = False
+winDelay = 20
+youWin = 0
+youLose = 0
+isCountWin = False
 
 #Game Loop
-def runGame(selectedNumber, setName, money):
+def runGame(selectedNumber, setName, money, bet):
     running = True
+    clicked = False
     initGame(setName)
+    totalMoney = money
     global selectedCar
     global youWin
+    global youLose
+    global isCountWin
 
     selectedCar = selectedNumber
 
     while running:
         # RGB
         screen.fill((0, 0, 0))
+
+
+        # GET MOUSE CLICK
+        dx, dy = pygame.mouse.get_pos()  # get clicked
+
+        # if mouse click execute
+        if playagainButton.collidepoint(dx, dy):
+            if clicked:
+                #Play Again
+                clicked = False
+                playAgain(setName)
+
+        if returnmenuButton.collidepoint(dx, dy):
+            if clicked:
+                # Return Main menu
+                quitGame()
+                running = False
+
+        clicked = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -354,8 +426,11 @@ def runGame(selectedNumber, setName, money):
                 if event.key == pygame.K_ESCAPE:
                     quitGame()
                     running = False
-
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    clicked = True
         i = 0
+
         for i in range(num_of_road):
             Road(RoadX, RoadY)
 
@@ -370,7 +445,7 @@ def runGame(selectedNumber, setName, money):
             Cars[i].Draw(screen)
 
         # # Draw win panel
-        if currentRank > 1:
+        if currentRank > 6:
 
             winner = None
             for i in range(len(Cars)):
@@ -381,20 +456,25 @@ def runGame(selectedNumber, setName, money):
             # selectedCar from index 1
             if winner != None and winner.No+1 == selectedCar:
                 Win()
-                youWin = True
+                if not isCountWin:
+                    youWin += 1
+                    isCountWin = True
             else:
                 Lose()
+                if not isCountWin:
+                    youLose += 1
+                    #isCountWin = False
 
         # Draw Ranking
-        if currentRank > len(Cars):
+        if currentRank > len(Cars) and winDelay == 0:
             # sort rank for car list
             Cars.sort(key=SortRanking)
             ShowRanking(Cars)
 
         pygame.display.update()
-    if youWin:
-        money += 1160
-    else:
-        money -= 1000
+
+    money += (youWin - youLose)*bet + int(youWin * (bet/2))
+
     return money
+
 
