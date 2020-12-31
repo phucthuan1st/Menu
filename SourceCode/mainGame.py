@@ -463,7 +463,7 @@ def runGame(selectedNumber, setName, money, bet):
                 Lose()
                 if not isCountWin:
                     youLose += 1
-                    #isCountWin = False
+                    isCountWin = True
 
         # Draw Ranking
         if currentRank > len(Cars) and winDelay == 0:
@@ -473,7 +473,7 @@ def runGame(selectedNumber, setName, money, bet):
 
         pygame.display.update()
 
-    money += (youWin - youLose)*bet + int(youWin * (bet/2))
+    money += (youWin - youLose)*bet + int(youWin * bet * 5 * 0.167)
 
     return money
 

@@ -26,7 +26,6 @@ pygame.display.set_caption('Racing bet 888') #set Caption for title bar
 DISPLAYSURFACE = pygame.display.set_mode(WINDOWSIZE) #create surface for mainmenu
 
 menuSound = pygame.mixer.Sound('../soundFX/menu.wav') #open sound
-#loginscreen = pygame.image.load('../image/loginscreen.png')
 changeSet = pygame.image.load('../image/changeSet.png')
 
 help = pygame.image.load('../image/help.png')
@@ -47,9 +46,9 @@ loginSound = pygame.mixer.Sound("../soundFX/loginsound.wav")
 loginScreen = pygame.image.load("../image/loginscreen.png")
 
 font = pygame.font.SysFont(None, 20, bold=True, italic=False) #set font for drawing
-userNameFont = pygame.font.SysFont(None, 25, bold=True, italic=True)
-mediumfont = pygame.font.SysFont(None, 30, bold = True, italic = False)
-bigfont = pygame.font.SysFont(None, 40, bold = True, italic = False)
+userNameFont = pygame.font.SysFont(None, 25, bold= False, italic=True)
+mediumfont = pygame.font.SysFont(None, 30, bold = False, italic = False)
+bigfont = pygame.font.SysFont(None, 40, bold = False, italic = False)
 
 #end define the game statistics
 #------------------------------------------------------------------------------------------------#
@@ -174,7 +173,8 @@ def mainMenu(money, characterSet, username):
 
         pygame.draw.rect(DISPLAYSURFACE, (255,255,255), moneyArea)
         pygame.draw.rect(DISPLAYSURFACE, (255, 0, 0), moneyArea, 3)
-        draw_text(username, userNameFont, (255, 0, 255), DISPLAYSURFACE, 260, 100)
+        pygame.draw.rect(DISPLAYSURFACE, (255, 255, 255), displayUserNameArea)
+        draw_text(username, userNameFont, (0, 0, 0), DISPLAYSURFACE, 260, 100)
         draw_text(str(money), mediumfont, (255,0,0), DISPLAYSURFACE, 700, 630)
 
         #define the bet button
@@ -290,8 +290,10 @@ def mainMenu(money, characterSet, username):
         if betYet:
             bet = betPopUps(bet, money)
             betYet = False
-        pygame.draw.rect(DISPLAYSURFACE, (0,0,0), (595, 580, 250, 20))
-        draw_text('You bet amount of money: ' + str(bet), font, (255, 255, 255), DISPLAYSURFACE, 610, 585)
+        pygame.draw.rect(DISPLAYSURFACE, (0,0,0), (595, 550, 250, 50))
+        pygame.draw.rect(DISPLAYSURFACE, (0,0,255), (595, 550, 250, 50), 3)
+        draw_text('Your current car choose: ' + str(betCar), font, (255,255,255), DISPLAYSURFACE, 605, 560)
+        draw_text('You bet amount of money: ' + str(bet), font, (255, 255, 255), DISPLAYSURFACE, 605, 580)
     #update screen every frame of loop
         fpsClock.tick(FPS)
         pygame.display.update() #update screen every execution
@@ -564,6 +566,7 @@ def miniGameEvent(money):
                     running = False
         fpsClock.tick(FPS)
         pygame.display.update()
+
 
 def changeSetScreen(selectedSet):
     running = True
