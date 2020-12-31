@@ -391,10 +391,14 @@ def runGame(selectedNumber, setName, money, bet):
     global youWin
     global youLose
     global isCountWin
-
+    show = False
     selectedCar = selectedNumber
 
     while running:
+        #music
+        if show:
+            draw_text('Now Playing: Diviners- Stockholm Lights (No Copyright Sound)', font, (255,255,255), DISPLAYSURFACE, 1, 705)
+        show = not show
         # RGB
         screen.fill((0, 0, 0))
 

@@ -26,6 +26,7 @@ pygame.display.set_caption('Racing bet 888') #set Caption for title bar
 DISPLAYSURFACE = pygame.display.set_mode(WINDOWSIZE) #create surface for mainmenu
 
 menuSound = pygame.mixer.Sound('../soundFX/menu.wav') #open sound
+gameSound = pygame.mixer.Sound('../soundFX/Diviners -Stockholm Lights.mp3')
 changeSet = pygame.image.load('../image/changeSet.png')
 
 help = pygame.image.load('../image/help.png')
@@ -163,6 +164,7 @@ def mainMenu(money, characterSet, username):
     betCar = 1
     betYet = False
     bet = 500
+    logOut = False
     while Running:
         #define the display
         MAINMENUSCREEN = pygame.image.load(setIndex[characterSet])
@@ -237,11 +239,13 @@ def mainMenu(money, characterSet, username):
                 if characterSet == 0:
                     characterSet = 1
                 money = runGame(betCar, characterSet, money, bet)
+                gameSound.stop()
                 menuSound.play(-1)
         if logOutButton.collidepoint(dx, dy):
             if clicked:
                 menuSound.stop()
                 username, password, money = loginscreen()
+                logOut = True
                 running = False
 
         #choose bet car
@@ -297,7 +301,10 @@ def mainMenu(money, characterSet, username):
     #update screen every frame of loop
         fpsClock.tick(FPS)
         pygame.display.update() #update screen every execution
-    return Running #return the running status to main
+    if logOut:
+        mainMenu(money, characterSet, username)
+    else:
+        return Running #return the running status to main
 
 numberKey = [ord('1'), ord('2'), ord('3'), ord('4'), ord('5'), ord('6'), ord('7'), ord('8'), ord('9'), ord('0')]
 
