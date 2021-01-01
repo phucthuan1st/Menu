@@ -34,7 +34,7 @@ characterSet = 0
 
 #access to database
 database = '../database.csv'
-data = pd.read_csv(database, index_col = False)
+data = pd.read_csv(database)
 quantity = int(data.iloc[0,8]) #number of account of this time
 site = None
 #windows statics
@@ -86,7 +86,7 @@ def signUpAndLoad(username, password):
     money = int(data.iloc[quantity, 2])
     quantity += 1
     data.iloc[0,8] = quantity
-    data.to_csv(database)
+    data.to_csv(database, index = False)
     return username, password, money
 
 
