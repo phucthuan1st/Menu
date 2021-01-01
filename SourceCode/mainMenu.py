@@ -1,37 +1,13 @@
 import pygame, sys
-
 import time
-
 from pygame import *
-
 from mainGame import *
-
 import pandas as pd
+from pandas import ExcelFile
+import numpy as np
 
 pygame.init()
 '''anything go with rect use the form (left, top, width, height)'''
-
-#from this is the define for game statistics
-FPS = 60
-fpsClock = pygame.time.Clock()
-
-
-#access to database
-database = pd.ExcelFile("../database.xlsx")
-data = pd.read_excel(database, 0, header=None)
-
-#windows statics
-WINDOWSIZE = (1280,720) #window size
-pygame.display.set_caption('Racing bet 888') #set Caption for title bar
-DISPLAYSURFACE = pygame.display.set_mode(WINDOWSIZE) #create surface for mainmenu
-
-menuSound = pygame.mixer.Sound('../soundFX/menu.wav') #open sound
-gameSound = pygame.mixer.Sound('../soundFX/Diviners -Stockholm Lights.mp3')
-changeSet = pygame.image.load('../image/changeSet.png')
-
-help = pygame.image.load('../image/help.png')
-
-donate = pygame.image.load('../image/donateRaiseRacingGame.png')
 
 #define the set image
 set0 = '../image/set0.png'
@@ -41,11 +17,35 @@ set3 = '../image/set3.png'
 set4 = '../image/set4.png'
 set5 = '../image/set5.png'
 
-setIndex = [set0, set1, set2, set3, set4, set5]
-characterSet = 0
-loginSound = pygame.mixer.Sound("../soundFX/loginsound.wav")
+#images
+help = pygame.image.load('../image/help.png')
+donate = pygame.image.load('../image/donateRaiseRacingGame.png')
+changeSet = pygame.image.load('../image/changeSet.png')
 loginScreen = pygame.image.load("../image/loginscreen.png")
 
+#from this is the define for game statistics
+FPS = 60
+fpsClock = pygame.time.Clock()
+numberKey = [ord('1'), ord('2'), ord('3'), ord('4'), ord('5'), ord('6'), ord('7'), ord('8'), ord('9'), ord('0')]
+setIndex = [set0, set1, set2, set3, set4, set5]
+characterSet = 0
+
+#access to database
+database = '../database.csv'
+data = pd.read_csv(database)
+quantity = int(data.iloc[0,8]) #number of account of this time
+site = None
+#windows statics
+WINDOWSIZE = (1280,720) #window size
+pygame.display.set_caption('Racing bet 888') #set Caption for title bar
+DISPLAYSURFACE = pygame.display.set_mode(WINDOWSIZE) #create surface for mainmenu
+
+#sound and music
+menuSound = pygame.mixer.Sound('../soundFX/menu.wav') #open sound
+gameSound = pygame.mixer.Sound('../soundFX/Diviners -Stockholm Lights.mp3')
+loginSound = pygame.mixer.Sound("../soundFX/loginsound.wav")
+
+#fonts
 font = pygame.font.SysFont(None, 20, bold=True, italic=False) #set font for drawing
 userNameFont = pygame.font.SysFont(None, 25, bold= False, italic=True)
 mediumfont = pygame.font.SysFont(None, 30, bold = False, italic = False)
@@ -54,7 +54,40 @@ bigfont = pygame.font.SysFont(None, 40, bold = False, italic = False)
 #end define the game statistics
 #------------------------------------------------------------------------------------------------#
 
-#drawing text on screen
+def checkExistAccount(username, password):
+    global quantity
+    exist = -1
+    cSite = None
+    for i in range(0, quantity):
+        if data.iloc[i, 0] != None and data.iloc[i, 1] != None:
+            if username == data.iloc[i, 0]:
+                exist = 0
+                if password == data.iloc[i, 1]:
+                    exist = 1
+                    cSite = i
+                else:
+                    exist = 0
+    return exist, cSite
+
+
+def loadGame():
+    username = data.iloc[site, 0]
+    password = data.iloc[site, 1]
+    money = int(data.iloc[site, 2])
+    return username, password, money
+
+
+def signUpAndLoad(username, password):
+    global quantity
+    data.iloc[quantity, 0] = username
+    data.iloc[quantity, 1] = password
+    money = int(data.iloc[quantity, 2])
+    quantity += 1
+    data.iloc[0,8] = quantity
+    data.to_csv(database)
+    return username, password, money
+
+
 def draw_text(text, font, color, surface, x, y):
     textobj = font.render(text, 1, color)
     textrect = textobj.get_rect()
@@ -64,6 +97,7 @@ def draw_text(text, font, color, surface, x, y):
 
 
 def loginscreen():
+    global site
     running = True
     clicked = False
     loginSound.play(-1)
@@ -74,7 +108,7 @@ def loginscreen():
     typingUserName = False
     typingPassword = False
     pushLoginButtn = False
-    money = 5000
+    money = None
     while running:
         DISPLAYSURFACE = pygame.display.set_mode(WINDOWSIZE)
         DISPLAYSURFACE.blit(loginScreen, (0, 0))
@@ -83,11 +117,14 @@ def loginscreen():
         userNameArea = pygame.Rect(40, 320, 375, 37)
         passwordArea = pygame.Rect(40, 397, 374, 40)
         loginButton = pygame.Rect(312, 460, 99, 32)
+
         dx, dy = pygame.mouse.get_pos()
 
         if show:
             draw_text('Now Playing: NIVIRO - Demons (No Copyright Sound)', font, (255,255,255), DISPLAYSURFACE, 1, 705)
         show = not show
+
+        checkExist, site = checkExistAccount(inputUserName, inputPassword)
 
         if userNameArea.collidepoint(dx, dy):
             pygame.draw.rect(DISPLAYSURFACE, (0, 255, 0), userNameArea, 3)
@@ -119,7 +156,7 @@ def loginscreen():
                 if event.button == 1:
                     clicked = True
             if event.type == KEYDOWN:
-                if event.key == K_RETURN:
+                if event.key == K_RETURN and checkExist != 0:
                     if inputUserName == "" or inputPassword == "":
                         pushLoginButtn = False
                     else:
@@ -143,19 +180,26 @@ def loginscreen():
                 if inputUserName == "" or inputPassword == "":
                     pushLoginButtn = False
                 else:
-                    running = False
-                    username = inputUserName
-                    password = inputPassword
-
+                    if checkExist != 0:
+                        running = False
             draw_text(inputUserName, font, (0,0,0), DISPLAYSURFACE, 45, 330)
             draw_text(censoredPassword, font, (0,0,0), DISPLAYSURFACE, 45, 407)
+
+        if checkExist == 1:
+            draw_text('LOGIN', font, (0,0,0), DISPLAYSURFACE, 335, 468)
+        elif checkExist == -1:
+            draw_text('SIGNUP', font, (0,0,0), DISPLAYSURFACE, 332, 468)
+        elif checkExist == 0:
+            draw_text('?????', font, (0,0,0), DISPLAYSURFACE, 335, 468)
         fpsClock.tick(FPS)
         pygame.display.update()
     loginSound.stop()
-    return username, password, money
+    if checkExist == 1:
+        return loadGame()
+    elif checkExist == -1:
+        return signUpAndLoad(inputUserName, inputPassword)
 
 
-#running main menu
 def mainMenu(money, characterSet, username):
     Running = True #check if running
     clicked = False #get clicked
@@ -309,8 +353,6 @@ def mainMenu(money, characterSet, username):
     else:
         return Running #return the running status to main
 
-numberKey = [ord('1'), ord('2'), ord('3'), ord('4'), ord('5'), ord('6'), ord('7'), ord('8'), ord('9'), ord('0')]
-
 
 def betPopUps(bet, money):
     running = True
@@ -344,6 +386,7 @@ def betPopUps(bet, money):
     if bet > money:
         bet = money
     return bet
+
 
 def exitConfirmScreen():
     running = True
@@ -638,15 +681,14 @@ def changeSetScreen(selectedSet):
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     clicked = True
-
         fpsClock.tick(FPS)
         pygame.display.update()
     return selectedSet
 
-dontHavemoney = 'YOU DON\'T HAVE ENOUGH MONEY'
 
 def shopScreen(money):
     running = True
+    dontHavemoney = 'YOU DON\'T HAVE ENOUGH MONEY'
     while running:
         DISPLAYSURFACE.fill((0, 0, 0))
         draw_text('Nothing at this time', bigfont, (255, 255, 255), DISPLAYSURFACE, 470, 300)
@@ -694,6 +736,7 @@ def main():
     username, password, money = loginscreen()
     mainMenu(money, characterSet, username)
 
+print(data)
 
 if __name__ == "__main__":
     main()
