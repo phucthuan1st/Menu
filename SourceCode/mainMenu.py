@@ -204,6 +204,9 @@ def mainMenu(money, characterSet, username):
         #GET MOUSE CLICK
         dx, dy = pygame.mouse.get_pos() #get clicked
 
+        if logOut:
+            menuSound.play(-1)
+            logOut = False
         #if mouse click execute
         if characterSet == 2:
             frame = (0,0,0)
