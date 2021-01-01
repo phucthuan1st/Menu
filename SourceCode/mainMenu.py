@@ -3,7 +3,8 @@ import time
 from pygame import *
 from mainGame import *
 import pandas as pd
-from pandas import ExcelFile
+from pandas import *
+
 import numpy as np
 
 pygame.init()
@@ -22,6 +23,7 @@ help = pygame.image.load('../image/help.png')
 donate = pygame.image.load('../image/donateRaiseRacingGame.png')
 changeSet = pygame.image.load('../image/changeSet.png')
 loginScreen = pygame.image.load("../image/loginscreen.png")
+saveButton = pygame.image.load("../image/save.png")
 
 #from this is the define for game statistics
 FPS = 60
@@ -32,7 +34,7 @@ characterSet = 0
 
 #access to database
 database = '../database.csv'
-data = pd.read_csv(database)
+data = pd.read_csv(database, index_col = False)
 quantity = int(data.iloc[0,8]) #number of account of this time
 site = None
 #windows statics
@@ -214,9 +216,9 @@ def mainMenu(money, characterSet, username):
         MAINMENUSCREEN = pygame.image.load(setIndex[characterSet])
         MAINMENUSCREEN = pygame.transform.scale(MAINMENUSCREEN, WINDOWSIZE)
         DISPLAYSURFACE.blit(MAINMENUSCREEN, (0,0)) #draw background
+        #DISPLAYSURFACE.blit(MAINMENUSCREEN, ())
         displayUserNameArea = (250, 87, 190, 43)
         moneyArea = (600, 605, 250, 62)
-
         pygame.draw.rect(DISPLAYSURFACE, (255,255,255), moneyArea)
         pygame.draw.rect(DISPLAYSURFACE, (255, 0, 0), moneyArea, 3)
         pygame.draw.rect(DISPLAYSURFACE, (255, 255, 255), displayUserNameArea)
