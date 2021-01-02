@@ -28,7 +28,19 @@ saveButton = pygame.image.load("../image/save.png")
 #from this is the define for game statistics
 FPS = 60
 fpsClock = pygame.time.Clock()
-numberKey = [ord('1'), ord('2'), ord('3'), ord('4'), ord('5'), ord('6'), ord('7'), ord('8'), ord('9'), ord('0')]
+numberKey = [ord('1'), ord('2'), ord('3'), ord('4'), ord('5'), ord('6'),
+            ord('7'), ord('8'), ord('9'), ord('0')]
+characterKey = [ord('A'), ord('B'), ord('C'), ord('D'), ord('E'),
+                ord('F'), ord('G'), ord('H'), ord('I'), ord('J'),
+                ord('K'), ord('L'), ord('M'), ord('N'), ord('O'),
+                ord('P'), ord('Q'), ord('R'), ord('S'), ord('T'),
+                ord('U'), ord('V'), ord('W'), ord('X'), ord('Y'),
+                ord('a'), ord('b'), ord('c'), ord('d'), ord('e'),
+                ord('f'), ord('g'), ord('h'), ord('i'), ord('j'),
+                ord('k'), ord('l'), ord('m'), ord('n'), ord('o'),
+                ord('p'), ord('q'), ord('r'), ord('s'), ord('t'),
+                ord('u'), ord('v'), ord('w'), ord('x'), ord('y')]
+
 setIndex = [set0, set1, set2, set3, set4, set5]
 characterSet = 0
 
@@ -170,14 +182,18 @@ def loginscreen():
                         if event.key == K_BACKSPACE:
                             inputUserName = inputUserName[0:-1]
                         else:
-                            inputUserName += event.unicode
+                            if (event.key in characterKey) or (event.key in numberKey):
+                                if len(inputUserName) < 20:
+                                    inputUserName += event.unicode
                     elif typingPassword and not typingUserName:
                         if event.key == K_BACKSPACE:
                             inputPassword = inputPassword[0:-1]
                             censoredPassword = censoredPassword[0:-1]
                         else:
-                            inputPassword += event.unicode
-                            censoredPassword += '*'
+                            if event.key in characterKey or event.key in numberKey:
+                                if len(inputPassword) < 20:
+                                    inputPassword += event.unicode
+                                    censoredPassword += '*'
             if pushLoginButtn:
                 if inputUserName == "" or inputPassword == "":
                     pushLoginButtn = False
@@ -287,7 +303,7 @@ def mainMenu(money, characterSet, username):
             if clicked:
                 if characterSet == 0:
                     characterSet = 1
-                money = runGame(betCar, characterSet, money, bet)
+                money = runGame(username, betCar, characterSet, money, bet)
                 gameSound.stop()
                 menuSound.play(-1)
         if logOutButton.collidepoint(dx, dy):
@@ -738,7 +754,6 @@ def main():
     username, password, money = loginscreen()
     mainMenu(money, characterSet, username)
 
-print(data)
 
 if __name__ == "__main__":
     main()

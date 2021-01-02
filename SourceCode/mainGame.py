@@ -153,6 +153,8 @@ class MyCar():
             self.buff = None
 
     def Draw(self, screen):
+        if self.No == selectedCar - 1:
+            draw_text(username, font, (255,255,0), DISPLAYSURFACE, self.x, self.y - 10)
         if self.isGoBack:
             flipImage = pygame.transform.flip(self.image, True, False)
             screen.blit(flipImage, (self.x, self.y))
@@ -382,7 +384,8 @@ youLose = 0
 isCountWin = False
 
 #Game Loop
-def runGame(selectedNumber, setName, money, bet):
+def runGame(name, selectedNumber, setName, money, bet):
+
     running = True
     clicked = False
     initGame(setName)
@@ -391,9 +394,10 @@ def runGame(selectedNumber, setName, money, bet):
     global youWin
     global youLose
     global isCountWin
+    global username
     show = False
     selectedCar = selectedNumber
-
+    username = name
     while running:
         #music
         if show:
@@ -478,7 +482,8 @@ def runGame(selectedNumber, setName, money, bet):
         pygame.display.update()
 
     money += (youWin - youLose)*bet + int(youWin * bet * 5 * 0.167)
-
-    return money
+    if money > 0:
+        return money
+    return 0
 
 
