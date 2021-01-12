@@ -5,7 +5,8 @@ import pygame, sys
 pygame.init()
 pygame.mixer.init()
 pygame.mixer.set_num_channels(10)
-
+FPS = 120
+fpsClock = pygame.time.Clock()
 # creat the screen
 screen = pygame.display.set_mode((1280, 720))
 WINDOWSIZE = (1280,720) #window size
@@ -85,8 +86,8 @@ class MyCar():
         self.timer = 0
         self.rank = 0
 
-        self.xChange = random.randrange(10, 15, 1) / 10
-        # self.xChange = random.randrange(50, 100, 1) / 10
+        # self.xChange = random.randrange(10, 15, 1) / 10
+        self.xChange = random.randrange(50, 100, 1) / 10
 
     def Update(self):
         # update timer for go back
@@ -103,8 +104,8 @@ class MyCar():
             self.timer -= 1
         if self.timer <= 0 and self.isStun:
             self.isStun = False
-            self.xChange = random.randrange(10, 15, 1) / 10
-#         self.xChange = random.randrange(50, 100, 1) / 10
+            # self.xChange = random.randrange(10, 15, 1) / 10
+        self.xChange = random.randrange(50, 100, 5) / 100
         if not self.isGoBack and not self.isStun:
             self.x += self.xChange
 
@@ -167,7 +168,7 @@ class MyCar():
                 maxRange = 1000
 
             self.buffX = random.randrange(int(self.x) + 100, maxRange, 100)
-            type = random.randint(0,5)
+            type = random.randint(0,7)
             self.buff = MyBuff(type, self.buffX, BuffSpeedY + self.No * BuffSpeedY_change)
             self.buffCount += 1
 
@@ -188,9 +189,9 @@ class MyBuff():
             self.xChange = -0.5
         elif type == 2:
             self.image = pygame.image.load("../image/ve.png")
-        elif type == 3:
+        elif type == 3 or type == 7:
             self.image = pygame.image.load("../image/turn.png")
-        elif type == 4:
+        elif type == 4 or type == 6:
             StunImg = pygame.image.load("../image/stun.png")
             self.image = pygame.transform.scale(StunImg, (50, 50))
         elif type == 5:
@@ -399,10 +400,7 @@ def runGame(name, selectedNumber, setName, money, bet):
     selectedCar = selectedNumber
     username = name
     while running:
-        #music
-        if show:
-            draw_text('Now Playing: Diviners- Stockholm Lights (No Copyright Sound)', font, (255,255,255), DISPLAYSURFACE, 1, 705)
-        show = not show
+
         # RGB
         screen.fill((0, 0, 0))
 
@@ -478,7 +476,10 @@ def runGame(name, selectedNumber, setName, money, bet):
             # sort rank for car list
             Cars.sort(key=SortRanking)
             ShowRanking(Cars)
-
+        if show:
+            draw_text('Now Playing: Diviners- Stockholm Lights (No Copyright Sound)', font, (255,255,255), DISPLAYSURFACE, 1, 705)
+        show = not show
+        fpsClock.tick(FPS)
         pygame.display.update()
 
     money += (youWin - youLose)*bet + int(youWin * bet * 5 * 0.167)
