@@ -2,7 +2,7 @@ from cx_Freeze import setup, Executable
 
 base = None
 
-executables = [Executable("mainMenu.py", base=base)]
+executables = [Executable("main.py", base=base)]
 
 packages = ["idna"]
 options = {
